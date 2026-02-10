@@ -1,8 +1,9 @@
+input.onLogoEvent(TouchButtonEvent.Touched, function () {
+    control.reset()
+    faces.showFace(faces.Eyes.Open, faces.Mouth.Flat, 2000)
+})
 input.onButtonPressed(Button.A, function () {
     Bird.change(LedSpriteProperty.Y, -1)
-})
-input.onGesture(Gesture.Shake, function () {
-	
 })
 input.onButtonPressed(Button.AB, function () {
     music.setVolume(0)
@@ -12,6 +13,7 @@ input.onButtonPressed(Button.B, function () {
 })
 let empty0bstacley = 0
 let Ticks = 0
+let High_score = 0
 let Bird: game.LedSprite = null
 let score = 0
 let plats = 0
@@ -21,9 +23,13 @@ Bird = game.createSprite(0, 2)
 Bird.set(LedSpriteProperty.Blink, 200)
 basic.forever(function () {
     music.setVolume(0)
+    led.setBrightness(100)
     while (Obstacles.length > 0 && Obstacles[0].get(LedSpriteProperty.X) == 0) {
         Obstacles.removeAt(0).delete()
         score += 0.25
+        if (score > High_score) {
+            High_score = score
+        }
     }
     for (let Obstacle of Obstacles) {
         Obstacle.change(LedSpriteProperty.X, -1)
@@ -41,8 +47,8 @@ basic.forever(function () {
             music.stopMelody(MelodyStopOptions.Background)
             music._playDefaultBackground(music.builtInPlayableMelody(Melodies.Wawawawaa), music.PlaybackMode.InBackground)
             basic.clearScreen()
-            for (let index = 0; index < 1e+110; index++) {
-                basic.showString("GAME OVER SCORE " + score)
+            for (let index = 0; index < 1; index++) {
+                basic.showString("GAME OVER SCORE " + score + " HIGH-SCORE " + High_score)
                 basic.pause(5000)
             }
             score = 0
